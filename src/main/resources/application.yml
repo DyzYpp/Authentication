@@ -1,0 +1,40 @@
+# 端口
+server:
+  port: 8780
+  servlet:
+    context-path: /auth
+
+# 数据库连接
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/sys_authentication
+    username: postgres
+    password: 123456
+  # redis
+  redis:
+    database: 0
+    port: 6379
+    host: 127.0.0.1
+    password: 123456
+    timeout: 1000
+    jedis:
+      pool:
+        max-wait: 1
+        max-active: 20
+        max-idle: 10
+        min-idle: 0
+
+# 输出SQL打印信息
+logging:
+  level:
+    com.sprinboot.mybatisplus.mapper: debug
+
+# mybatisPlus配置
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+
+
+
