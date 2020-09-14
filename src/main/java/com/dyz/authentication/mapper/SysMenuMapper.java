@@ -2,8 +2,6 @@ package com.dyz.authentication.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.dyz.authentication.entity.SysMenu;
-import com.dyz.authentication.entity.SysUser;
-import com.dyz.authentication.entity.VO.SysMenuVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

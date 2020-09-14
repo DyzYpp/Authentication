@@ -13,9 +13,9 @@ import java.util.Collection;
  */
 public class AuthUser implements UserDetails {
 
-    private String username;
+    private String userName;
 
-    private String password;
+    private String passWord;
 
     private Integer state;
 
@@ -24,9 +24,9 @@ public class AuthUser implements UserDetails {
     public AuthUser() {
     }
 
-    public AuthUser(String username, String password, Integer state, Collection<? extends GrantedAuthority> authorities) {
-        this.username = username;
-        this.password = password;
+    public AuthUser(String userName, String passWord, Integer state, Collection<? extends GrantedAuthority> authorities) {
+        this.userName = userName;
+        this.passWord = passWord;
         this.state = state;
         this.authorities = authorities;
     }
@@ -38,12 +38,12 @@ public class AuthUser implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return passWord;
     }
 
     @Override
     public String getUsername() {
-        return username;
+        return userName;
     }
 
     @Override
@@ -69,8 +69,8 @@ public class AuthUser implements UserDetails {
     @Override
     public String toString() {
         return "AuthUser{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
+                "userName='" + userName + '\'' +
+                ", passWord='" + passWord + '\'' +
                 ", state=" + state +
                 ", authorities=" + authorities +
                 '}';

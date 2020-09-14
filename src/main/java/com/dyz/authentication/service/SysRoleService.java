@@ -2,7 +2,7 @@ package com.dyz.authentication.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.dyz.authentication.entity.SysRole;
-import com.dyz.authentication.entity.VO.PageVo;
+import com.dyz.authentication.entity.Vo.PageVo;
 
 import java.util.List;
 

@@ -1,10 +1,10 @@
 package com.dyz.authentication.controller;
 
 import com.dyz.authentication.entity.SysUser;
-import com.dyz.authentication.entity.VO.PageVo;
-import com.dyz.authentication.entity.VO.SysUserVo;
+import com.dyz.authentication.entity.Vo.PageVo;
+import com.dyz.authentication.entity.Vo.SysUserVo;
 import com.dyz.authentication.service.SysUserService;
-import com.dyz.authentication.util.returnResult.AjaxResult;
+import com.dyz.authentication.util.ResultUtil.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -56,7 +56,7 @@ public class SysUserController {
      * @param id 
      **/
     @GetMapping("/{id}")
-    public AjaxResult getUserById(@PathVariable("id") Long id){
+    public AjaxResult getUserById(@PathVariable("id") String id){
         SysUser user = userService.getById(id);
         return AjaxResult.success(user);
     }
@@ -69,5 +69,15 @@ public class SysUserController {
     public AjaxResult delete(@RequestParam("idList") List<String> ids){
         boolean delete = userService.delete(ids);
         return delete == true ? AjaxResult.success() : AjaxResult.error();
+    }
+
+    /*
+     * @Description 重置密码
+     * @param sysUserVo 
+     **/
+    @PostMapping("/resetPassWord")
+    public AjaxResult resetPassword(@RequestBody SysUserVo sysUserVo){
+        boolean b = userService.resetPassword(sysUserVo);
+        return b == true ? AjaxResult.success() : AjaxResult.error();
     }
 }

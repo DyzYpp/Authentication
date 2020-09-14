@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
-@MapperScan("com.dyz.authentication.mapper")
 @EnableTransactionManagement
 public class AuthenticationApplication {
 

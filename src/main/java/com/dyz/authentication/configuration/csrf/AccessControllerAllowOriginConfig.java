@@ -9,9 +9,9 @@ import java.io.IOException;
 
 /**
  * @ClassName AccessControlerAllowOriginConfig
- * @Author
+ * @Author Duan yuzhe
  * @Date 2020/8/30
- * @description
+ * @description 请求跨域配置
  */
 @Component
 public class AccessControllerAllowOriginConfig implements Filter {

@@ -34,6 +34,10 @@ public class SysApiInterface {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
+    @TableLogic
+    @TableField(fill = FieldFill.INSERT)
+    private Integer isDeleted;
+
     public SysApiInterface() {
     }
 
@@ -58,6 +62,14 @@ public class SysApiInterface {
         this.updateTime = updateTime;
     }
 
+
+    public Integer getIsDelete() {
+        return isDeleted;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDeleted = isDeleted;
+    }
 
     public String getApiId() {
         return apiId;
@@ -134,15 +146,16 @@ public class SysApiInterface {
     @Override
     public String toString() {
         return "SysApiInterface{" +
-                "apiId=" + apiId +
+                "apiId='" + apiId + '\'' +
                 ", apiName='" + apiName + '\'' +
                 ", apiUrl='" + apiUrl + '\'' +
-                ", pid=" + pid +
+                ", pid='" + pid + '\'' +
                 ", apiMethod='" + apiMethod + '\'' +
                 ", apiSort=" + apiSort +
                 ", description='" + description + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
+                ", isDeleted=" + isDeleted +
                 '}';
     }
 }

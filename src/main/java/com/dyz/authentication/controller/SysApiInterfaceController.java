@@ -1,9 +1,9 @@
 package com.dyz.authentication.controller;
 
 import com.dyz.authentication.entity.SysApiInterface;
-import com.dyz.authentication.entity.VO.SysApiInterfaceVo;
+import com.dyz.authentication.entity.Vo.SysApiInterfaceVo;
 import com.dyz.authentication.service.SysApiInterfaceService;
-import com.dyz.authentication.util.returnResult.AjaxResult;
+import com.dyz.authentication.util.ResultUtil.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -23,20 +23,7 @@ public class SysApiInterfaceController {
     SysApiInterfaceService apiInterfaceService;
 
     /*
-     * @Description 根据用户名获取api权限列表
-     * @param username
-     * @return java.util.List<com.dyz.authentication.entity.SysApiInterface>
-     **/
-    @ResponseBody
-    @GetMapping(value = "/sysApiInterface")
-    public List<SysApiInterface> getApiInterfaceListByUserName(@RequestParam(value = "username") String username){
-        return apiInterfaceService.getApiInterfaceListByUserName(username);
-    }
-    
-    /*
      * @Description 查询api列表
-     * @param  
-     * @return com.dyz.authentication.util.returnResult.AjaxResult
      **/
     @GetMapping
     public AjaxResult getAllList(){
@@ -47,7 +34,6 @@ public class SysApiInterfaceController {
     /*
      * @Description 通过id获取api信息
      * @param id
-     * @return com.dyz.authentication.util.returnResult.AjaxResult
      **/
     @GetMapping("/{id}")
     public AjaxResult getApiById(@PathVariable("id") String id){
@@ -58,7 +44,6 @@ public class SysApiInterfaceController {
     /*
      * @Description 添加api接口
      * @param sysApiInterface 
-     * @return com.dyz.authentication.util.returnResult.AjaxResult
      **/
     @PostMapping
     public AjaxResult insert(@RequestBody SysApiInterface sysApiInterface){
@@ -72,7 +57,6 @@ public class SysApiInterfaceController {
     /*
      * @Description 修改api接口
      * @param sysApiInterface 
-     * @return com.dyz.authentication.util.returnResult.AjaxResult
      **/
     @PutMapping
     public AjaxResult update(@RequestBody SysApiInterface sysApiInterface){
@@ -83,7 +67,6 @@ public class SysApiInterfaceController {
     /*
      * @Description 删除api接口
      * @param ids 
-     * @return com.dyz.authentication.util.returnResult.AjaxResult
      **/
     @DeleteMapping
     public AjaxResult delete(@RequestParam("idList") List<String> ids){

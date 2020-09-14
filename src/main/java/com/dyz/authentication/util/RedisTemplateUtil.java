@@ -1,8 +1,11 @@
 package com.dyz.authentication.util;
 
+import com.baomidou.mybatisplus.extension.api.R;
+import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +25,18 @@ public class RedisTemplateUtil {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    public static final long REDIS_EXPIRE_TIME = 3600000L * 24 * 7;
+
+    @Autowired(required = false)
+    public void setRedisTemplate(RedisTemplate redisTemplate) {
+        RedisSerializer stringSerializer = new StringRedisSerializer();
+        redisTemplate.setKeySerializer(stringSerializer);
+        redisTemplate.setValueSerializer(stringSerializer);
+        redisTemplate.setHashKeySerializer(stringSerializer);
+        redisTemplate.setHashValueSerializer(stringSerializer);
+        this.redisTemplate = redisTemplate;
+    }
 
     /**
      * 批量删除对应的value
@@ -141,4 +156,5 @@ public class RedisTemplateUtil {
         }
         return result;
     }
+
 }

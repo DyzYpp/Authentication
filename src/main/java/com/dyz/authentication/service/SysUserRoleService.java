@@ -2,7 +2,7 @@ package com.dyz.authentication.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.dyz.authentication.entity.SysUserRole;
-import com.dyz.authentication.entity.VO.SysRoleAndPermissionVo;
+import com.dyz.authentication.entity.Vo.SysRoleAndPermissionVo;
 
 /**
  * @interface SysUserRoleService

@@ -6,11 +6,10 @@ import com.dyz.authentication.entity.SysApiInterface;
 import com.dyz.authentication.entity.SysRoleApi;
 import com.dyz.authentication.entity.SysUser;
 import com.dyz.authentication.entity.SysUserRole;
-import com.dyz.authentication.entity.VO.SysApiInterfaceVo;
-import com.dyz.authentication.entity.VO.SysRoleAndPermissionVo;
+import com.dyz.authentication.entity.Vo.SysApiInterfaceVo;
+import com.dyz.authentication.entity.Vo.SysRoleAndPermissionVo;
 import com.dyz.authentication.mapper.SysApiInterfaceMapper;
 import com.dyz.authentication.mapper.SysRoleApiMapper;
-import com.dyz.authentication.mapper.SysUserMapper;
 import com.dyz.authentication.service.SysApiInterfaceService;
 import com.dyz.authentication.service.SysRoleApiService;
 import com.dyz.authentication.service.SysUserRoleService;
@@ -115,45 +114,11 @@ public class SysApiInterfaceServiceImpl extends ServiceImpl<SysApiInterfaceMappe
      **/
     @Override
     public List<SysRoleAndPermissionVo> getApiListByRoleId(String roleId) {
-        // 存储结果的集合
-        List<SysRoleAndPermissionVo> resultList = new ArrayList<>();
-        // 存储api转换为SysRoleAndPermissionVo集合
-        List<SysRoleAndPermissionVo> permissionVoList = new ArrayList<>();
         // api列表集合
         List<SysApiInterface> apiInterfaceList = this.list();
         // 角色API集合
         List<SysRoleApi> roleApiList = roleApiMapper.selectList(new QueryWrapper<SysRoleApi>().eq("role_id", roleId));
-        // 将api对象转换为SysRoleAndPermissionVo对象
-        for (SysApiInterface apiInterface : apiInterfaceList) {
-            String name = apiInterface.getApiUrl().equals("NONE") ?
-                    apiInterface.getApiName() : apiInterface.getApiName()
-                    + "（uri：" + apiInterface.getApiUrl() + "，请求方式：" + apiInterface.getApiMethod() + "）";
-            SysRoleAndPermissionVo permissionVo = new SysRoleAndPermissionVo(apiInterface.getApiId(),name,apiInterface.getPid());
-            permissionVoList.add(permissionVo);
-        }
-        // 给当前角色权限范围内的api对象赋值roleId
-        for (SysRoleAndPermissionVo vo : permissionVoList) {
-            for (SysRoleApi roleApi : roleApiList) {
-                if (vo.getId().equals(roleApi.getApiId())){
-                    vo.setRoleId(roleApi.getRoleId());
-                }
-            }
-        }
-        // 父级菜单集合
-        List<SysRoleAndPermissionVo> collect = permissionVoList.stream().filter(item -> item.getPid() == null).collect(Collectors.toList());
-        //根据pid分类
-        Map<String, List<SysRoleAndPermissionVo>> map = permissionVoList.stream().filter(item -> item.getPid() != null).collect(Collectors.groupingBy(SysRoleAndPermissionVo::getPid));
-        if (collect.size() == map.size() + 1){
-            for (SysRoleAndPermissionVo permissionVo : collect) {
-                for (String s : map.keySet()) {
-                    if (permissionVo.getId().equals(s)){
-                        permissionVo.setChildrenList(map.get(s));
-                    }
-                }
-                resultList.add(permissionVo);
-            }
-        }
-        return resultList;
+        return ListToHierarchyListService.listToHierarchyList(apiInterfaceList,roleApiList);
     }
 
     /*
@@ -166,8 +131,10 @@ public class SysApiInterfaceServiceImpl extends ServiceImpl<SysApiInterfaceMappe
     public boolean delete(List<String> ids) {
         if (ids != null){
             for (String id : ids) {
-                boolean remove = roleApiService.remove(new QueryWrapper<SysRoleApi>().eq("api_id", id));
-                if (remove != true); return false;
+                List<SysRoleApi> list = roleApiService.list(new QueryWrapper<SysRoleApi>().eq("api_id", id));
+                if (list.size() != 0){
+                    roleApiService.remove(new QueryWrapper<SysRoleApi>().eq("api_id", id));
+                }
             }
             boolean b = this.removeByIds(ids);
             if (b); return true;

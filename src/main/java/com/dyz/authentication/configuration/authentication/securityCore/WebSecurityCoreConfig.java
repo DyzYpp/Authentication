@@ -90,6 +90,7 @@ public class WebSecurityCoreConfig extends WebSecurityConfigurerAdapter {
         //放行注册API请求，其它任何请求都必须经过身份验证.
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/user/register").permitAll()
+//                .antMatchers(HttpMethod.GET,"/user/{id}").access("hasIpAddress('192.168.0.116') or hasAuthority('ROLE_ADMIN') and has")
 //                //ROLE_ADMIN可以操作任何事情
 //                .antMatchers("/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest().access("@dynamicPermission.checkPermission(request,authentication)");

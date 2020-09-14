@@ -1,16 +1,11 @@
 package com.dyz.authentication.controller;
 
 import com.dyz.authentication.entity.SysMenu;
-import com.dyz.authentication.entity.VO.SysMenuVo;
+import com.dyz.authentication.entity.Vo.SysMenuVo;
 import com.dyz.authentication.service.SysMenuService;
-import com.dyz.authentication.service.SysRoleService;
-import com.dyz.authentication.util.SnowFlake;
-import com.dyz.authentication.util.returnResult.AjaxResult;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+import com.dyz.authentication.util.ResultUtil.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 /**
@@ -29,7 +24,6 @@ public class SysMenuController {
     /*
      * @Description 添加菜单
      * @param sysMenu 
-     * @return com.dyz.authentication.util.returnResult.AjaxResult
      **/
     @PostMapping
     public AjaxResult insertMenu(@RequestBody SysMenu sysMenu){
@@ -40,7 +34,6 @@ public class SysMenuController {
     /*
      * @Description 查询所有菜单
      * @param  
-     * @return com.dyz.authentication.util.returnResult.AjaxResult
      **/
     @GetMapping
     public AjaxResult getAllMenuList(){
@@ -51,7 +44,6 @@ public class SysMenuController {
     /*
      * @Description 通过id查询菜单
      * @param id 
-     * @return com.dyz.authentication.util.returnResult.AjaxResult
      **/
     @GetMapping("/{id}")
     public AjaxResult getMenuById(@PathVariable("id") String id){
@@ -62,7 +54,6 @@ public class SysMenuController {
     /*
      * @Description 修改菜单
      * @param sysMenu 
-     * @return com.dyz.authentication.util.returnResult.AjaxResult
      **/
     @PutMapping
     public AjaxResult update(@RequestBody SysMenu sysMenu){
@@ -73,15 +64,12 @@ public class SysMenuController {
     /*
      * @Description 删除菜单
      * @param ids
-     * @return com.dyz.authentication.util.returnResult.AjaxResult
      **/
     @DeleteMapping
     public AjaxResult delete(@RequestParam("idList") List<String> ids){
         boolean remove = menuService.delete(ids);
         return remove == true ? AjaxResult.success() : AjaxResult.error();
     }
-
-    
 
   /*  @GetMapping("/{username}")
     public AjaxResult getMenuListByUserName(@PathVariable("username") String username){

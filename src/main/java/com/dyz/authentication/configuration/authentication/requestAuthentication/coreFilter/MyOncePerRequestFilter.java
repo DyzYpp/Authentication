@@ -50,11 +50,14 @@ public class MyOncePerRequestFilter extends OncePerRequestFilter {
 
         // 从请求头中获取token
         String token = this.getTokenFromRequestHeader(request);
-
         try {
             if (StringUtils.checkValNotNull(token)){
                 //2. 从token中获取用户名
                 String username = jwtTokenUtil.getUsernameFromToken(token);
+                // 如果用户名为null，说明jwt中token已经过期，需重新登录
+                if (StringUtils.checkValNull(username)){
+                    throw new ServletException("身份凭证已经过期，请重新登录。");
+                }
                 //3. 通过用户信息得到UserDetails
                 UserDetails userDetails = this.getUserDetails(username, request);
                 //4. 验证并更新数据
@@ -121,27 +124,23 @@ public class MyOncePerRequestFilter extends OncePerRequestFilter {
      * 验证数据并更新
      */
     void validateAndUpdate(String username,String token, UserDetails userDetails, HttpServletRequest request) throws Exception {
-        if (StringUtils.checkValNull(userDetails)){
-            throw new ServletException("用户信息为空");
-        }
         //验证小范围(redis)过期情况
         if (!this.checkRedisToken(username)){
             throw new ServletException("Token令牌过期，请重新登录。");
         }
         //验证大范围过期情况(周期)
         if (jwtTokenUtil.validateToken(token,userDetails)){
-            //将用户信息存储   authentication，方便后续校验
-            AbstractAuthenticationToken authenticationToken = this.getAuthenticationToken(userDetails);
-            // setDetails
-            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            // 将authentication存入 ThreadLocal中，方便后续获取用户信息
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            // 刷新token
+            String refreshToken = jwtTokenUtil.refreshToken(token);
             // 更新redis
-            redisTemplateUtil.setItemWithExpireTime(username,token,JwtTokenUtil.EXPIRATION_TIME);
-        }else{
-            //如果小范围满足，证明是刚刚登录，但大范围已经过期，此时，需要刷新token。
-            jwtTokenUtil.refreshToken(token);
+            redisTemplateUtil.setItemWithExpireTime(username,refreshToken,JwtTokenUtil.EXPIRATION_TIME);
         }
+        //将用户信息存储   authentication，方便后续校验
+        AbstractAuthenticationToken authenticationToken = this.getAuthenticationToken(userDetails);
+        // setDetails
+        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        // 将authentication存入 ThreadLocal中，方便后续获取用户信息
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
 
     /**

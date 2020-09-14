@@ -2,10 +2,10 @@ package com.dyz.authentication.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.dyz.authentication.entity.SysUser;
-import com.dyz.authentication.entity.VO.PageVo;
-import com.dyz.authentication.entity.VO.SysRoleAndPermissionVo;
-import com.dyz.authentication.entity.VO.SysUserVo;
-import com.dyz.authentication.util.returnResult.AjaxResult;
+import com.dyz.authentication.entity.Vo.PageVo;
+import com.dyz.authentication.entity.Vo.SysRoleAndPermissionVo;
+import com.dyz.authentication.entity.Vo.SysUserVo;
+import com.dyz.authentication.util.ResultUtil.AjaxResult;
 
 import java.util.List;
 
@@ -51,5 +51,10 @@ public interface SysUserService extends IService<SysUser> {
      * 删除api接口
      */
     boolean delete(List<String> ids);
+
+    /**
+     * 重置密码
+     */
+    boolean resetPassword(SysUserVo sysUserVo);
 
 }

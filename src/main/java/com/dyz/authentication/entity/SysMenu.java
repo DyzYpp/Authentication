@@ -33,6 +33,18 @@ public class SysMenu {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
+    @TableLogic
+    @TableField(fill = FieldFill.INSERT)
+    private Integer isDeleted;
+
+    public Integer getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Integer isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
     public Date getCreateTime() {
         return createTime;
     }
@@ -100,14 +112,15 @@ public class SysMenu {
     @Override
     public String toString() {
         return "SysMenu{" +
-                "menuId=" + menuId +
+                "menuId='" + menuId + '\'' +
                 ", menuName='" + menuName + '\'' +
                 ", menuUrl='" + menuUrl + '\'' +
-                ", parentId=" + parentId +
+                ", parentId='" + parentId + '\'' +
                 ", menuSort=" + menuSort +
                 ", description='" + description + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
+                ", isDeleted=" + isDeleted +
                 '}';
     }
 }

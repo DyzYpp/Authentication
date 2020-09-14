@@ -3,6 +3,7 @@ package com.dyz.authentication.configuration.mybatisPlus;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import org.apache.ibatis.reflection.MetaObject;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import java.util.Date;
  */
 @Configuration
 @Component
+@MapperScan("com.dyz.authentication.mapper")
 public class MyBatisPlusConfig implements MetaObjectHandler {
 
     /**
@@ -34,6 +36,7 @@ public class MyBatisPlusConfig implements MetaObjectHandler {
         this.strictInsertFill(metaObject,"operationTime", Date.class,new Date());
         this.strictInsertFill(metaObject,"updateTime", Date.class,new Date());
         this.setFieldValByName("loginDescription","登录日志",metaObject);
+        this.setFieldValByName("isDeleted",0,metaObject);
     }
 
     /**

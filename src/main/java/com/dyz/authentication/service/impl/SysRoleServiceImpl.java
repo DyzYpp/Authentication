@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dyz.authentication.entity.*;
-import com.dyz.authentication.entity.VO.PageVo;
+import com.dyz.authentication.entity.Vo.PageVo;
 import com.dyz.authentication.mapper.*;
 import com.dyz.authentication.service.SysRoleApiService;
 import com.dyz.authentication.service.SysRoleMenuService;
@@ -67,7 +67,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
 
     /*
-     * @Description 分页查询用户
+     * @Description 分页查询角色
      * @param pageVo 
      * @return java.util.List<com.dyz.authentication.entity.SysRole>
      **/
@@ -75,7 +75,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public List<SysRole> getRoleByPage(PageVo pageVo) {
         IPage<SysRole> res;
         List<SysRole> roles;
-        if (pageVo.getCondition().equals("")){
+        if (pageVo.getCondition().equals("") || pageVo.getType().equals("")){
             res = roleMapper.selectPage(new Page<SysRole>(pageVo.getPage(),pageVo.getPageSize()),
                     new QueryWrapper<SysRole>().orderByAsc("role_name"));
         } else {
@@ -97,10 +97,18 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public boolean delete(List<String> ids) {
         if (ids != null){
             for (String id : ids) {
-                boolean removeMenu = roleMenuService.remove(new QueryWrapper<SysRoleMenu>().eq("role_id", id));
-                boolean removeApi = roleApiService.remove(new QueryWrapper<SysRoleApi>().eq("role_id", id));
-                boolean removeUser = userRoleService.remove(new QueryWrapper<SysUserRole>().eq("role_id", id));
-                if (removeMenu != true || removeApi != true || removeUser != true); return false;
+                List<SysRoleMenu> roleMenus = roleMenuService.list(new QueryWrapper<SysRoleMenu>().eq("role_id", id));
+                if (roleMenus.size() != 0){
+                     roleMenuService.remove(new QueryWrapper<SysRoleMenu>().eq("role_id", id));
+                }
+                List<SysRoleApi> roleApis = roleApiService.list(new QueryWrapper<SysRoleApi>().eq("role_id", id));
+                if (roleApis.size() != 0){
+                    roleApiService.remove(new QueryWrapper<SysRoleApi>().eq("role_id", id));
+                }
+                List<SysUserRole> userRoles = userRoleService.list(new QueryWrapper<SysUserRole>().eq("role_id", id));
+                if (userRoles.size() != 0){
+                    userRoleService.remove(new QueryWrapper<SysUserRole>().eq("role_id", id));
+                }
             }
             boolean b = this.removeByIds(ids);
             if (b); return true;

@@ -1,4 +1,4 @@
-package com.dyz.authentication.entity.VO;
+package com.dyz.authentication.entity.Vo;
 
 /**
  * @ClassName PageVo

@@ -1,10 +1,10 @@
 package com.dyz.authentication.controller;
 
 import com.dyz.authentication.entity.SysRole;
-import com.dyz.authentication.entity.VO.PageVo;
-import com.dyz.authentication.entity.VO.SysRoleAndPermissionVo;
+import com.dyz.authentication.entity.Vo.PageVo;
+import com.dyz.authentication.entity.Vo.SysRoleAndPermissionVo;
 import com.dyz.authentication.service.*;
-import com.dyz.authentication.util.returnResult.AjaxResult;
+import com.dyz.authentication.util.ResultUtil.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;

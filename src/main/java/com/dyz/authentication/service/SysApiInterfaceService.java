@@ -2,8 +2,8 @@ package com.dyz.authentication.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.dyz.authentication.entity.SysApiInterface;
-import com.dyz.authentication.entity.VO.SysApiInterfaceVo;
-import com.dyz.authentication.entity.VO.SysRoleAndPermissionVo;
+import com.dyz.authentication.entity.Vo.SysApiInterfaceVo;
+import com.dyz.authentication.entity.Vo.SysRoleAndPermissionVo;
 
 import java.util.List;
 

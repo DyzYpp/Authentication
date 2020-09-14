@@ -18,7 +18,7 @@ public class SysUser{
 
     private String userName;
 
-    private String password;
+    private String passWord;
 
     private String description;
 
@@ -30,17 +30,29 @@ public class SysUser{
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
+    @TableLogic
+    @TableField(fill = FieldFill.INSERT)
+    private Integer isDeleted;
+
     public SysUser() {
     }
 
-    public SysUser(String id, String userName, String password, String description, Integer status) {
+    public SysUser(String id, String userName, String passWord, String description, Integer status) {
         this.id = id;
         this.userName = userName;
-        this.password = password;
+        this.passWord = passWord;
         this.description = description;
         this.status = status;
     }
 
+
+    public Integer getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Integer isDeleted) {
+        this.isDeleted = isDeleted;
+    }
 
     public Date getCreateTime() {
         return createTime;
@@ -74,12 +86,12 @@ public class SysUser{
         this.userName = userName;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPassWord() {
+        return passWord;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassWord(String passWord) {
+        this.passWord = passWord;
     }
 
     public String getDescription() {
@@ -101,13 +113,14 @@ public class SysUser{
     @Override
     public String toString() {
         return "SysUser{" +
-                "id=" + id +
+                "id='" + id + '\'' +
                 ", userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
+                ", passWord='" + passWord + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
+                ", isDeleted=" + isDeleted +
                 '}';
     }
 }

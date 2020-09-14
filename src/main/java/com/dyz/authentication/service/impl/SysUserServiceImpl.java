@@ -6,20 +6,19 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dyz.authentication.entity.SysUser;
 import com.dyz.authentication.entity.SysUserRole;
-import com.dyz.authentication.entity.VO.PageVo;
-import com.dyz.authentication.entity.VO.SysRoleAndPermissionVo;
-import com.dyz.authentication.entity.VO.SysUserVo;
+import com.dyz.authentication.entity.Vo.PageVo;
+import com.dyz.authentication.entity.Vo.SysRoleAndPermissionVo;
+import com.dyz.authentication.entity.Vo.SysUserVo;
 import com.dyz.authentication.mapper.SysUserMapper;
 import com.dyz.authentication.mapper.SysUserRoleMapper;
 import com.dyz.authentication.service.SysUserRoleService;
 import com.dyz.authentication.service.SysUserService;
 import com.dyz.authentication.util.BCryptPasswordEncoderUtil;
-import com.dyz.authentication.util.returnResult.AjaxResult;
-import com.dyz.authentication.util.returnResult.Enums;
+import com.dyz.authentication.util.ResultUtil.AjaxResult;
+import com.dyz.authentication.util.ResultUtil.Enums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +55,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper,SysUser> imple
         if (user == null){
             throw new Exception("账号不存在,请重新尝试");
         } else {
-            String encodedPassword = user.getPassword();
+            String encodedPassword = user.getPassWord();
             if (!bCryptPasswordEncoderUtil.matches(passWord,encodedPassword)){
                 throw new Exception("密码不正确！");
             } else {
@@ -82,12 +81,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper,SysUser> imple
      **/
     @Override
     public AjaxResult registerUser(SysUserVo sysUserVO) {
-        SysUser user = userMapper.selectOne(new QueryWrapper<SysUser>().eq("user_name", sysUserVO.getUsername()));
+        SysUser user = userMapper.selectOne(new QueryWrapper<SysUser>().eq("user_name", sysUserVO.getUserName()));
         if (user != null){
             return AjaxResult.error(Enums.USER_REGISTER.getMsg(), Enums.USER_REGISTER.getCode());
         } else {
-            String passWord = bCryptPasswordEncoderUtil.encode(sysUserVO.getPassword());
-            SysUser sysUser = new SysUser(sysUserVO.getId(),sysUserVO.getUsername(),passWord,sysUserVO.getDescription(),1);
+            String passWord = bCryptPasswordEncoderUtil.encode(sysUserVO.getPassWord());
+            SysUser sysUser = new SysUser(sysUserVO.getId(),sysUserVO.getUserName(),passWord,sysUserVO.getDescription(),1);
             return this.save(sysUser) == true ? AjaxResult.success("操作成功") : AjaxResult.error("操作失败");
         }
     }
@@ -101,8 +100,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper,SysUser> imple
     public boolean updateUser(SysUserVo sysUserVO) {
         SysUser user = this.getById(sysUserVO.getId());
         if (user != null){
-            user.setUserName(sysUserVO.getUsername());
-            user.setPassword(bCryptPasswordEncoderUtil.encode(sysUserVO.getPassword()));
+            user.setUserName(sysUserVO.getUserName());
+            user.setPassWord(bCryptPasswordEncoderUtil.encode(sysUserVO.getPassWord()));
             user.setDescription(sysUserVO.getDescription());
         }
         boolean b = this.updateById(user);
@@ -118,7 +117,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper,SysUser> imple
     public List<SysUser> getUserByPage(PageVo pageVo) {
         IPage<SysUser> res;
         List<SysUser> users;
-        if (pageVo.getCondition().equals("")){
+        if (pageVo.getCondition().equals("") || pageVo.getType().equals("")){
             res = userMapper.selectPage(new Page<SysUser>(pageVo.getPage(),pageVo.getPageSize()),
                     new QueryWrapper<SysUser>().orderByAsc("user_name"));
         } else {
@@ -169,12 +168,27 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper,SysUser> imple
     public boolean delete(List<String> ids) {
         if (ids != null){
             for (String id : ids) {
-                boolean remove = userRoleService.remove(new QueryWrapper<SysUserRole>().eq("user_id", id));
-                if (remove != true); return false;
+                List<SysUserRole> list = userRoleService.list(new QueryWrapper<SysUserRole>().eq("user_id", id));
+                if (list.size() != 0){
+                    userRoleService.remove(new QueryWrapper<SysUserRole>().eq("user_id", id));
+                }
             }
             boolean b = this.removeByIds(ids);
             if (b); return true;
         }
         return false;
+    }
+
+    /*
+     * @Description 重置密码
+     * @param sysUserVo
+     * @return boolean
+     **/
+    @Override
+    public boolean resetPassword(SysUserVo sysUserVo) {
+        SysUser user = this.getById(sysUserVo.getId());
+        user.setPassWord(bCryptPasswordEncoderUtil.encode("000000"));
+        boolean update = this.updateById(user);
+        return update;
     }
 }

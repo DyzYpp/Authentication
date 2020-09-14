@@ -15,10 +15,10 @@ import java.util.Map;
 @Component
 public class JwtTokenUtil {
     //私钥
-    private static final String SECRET_KEY = "coding-study";
+    private static final String SECRET_KEY = "myJwt";
 
     // 过期时间 毫秒,设置默认1周的时间过期
-    public   static final long EXPIRATION_TIME = 3600000L * 24*7;
+    public   static final long EXPIRATION_TIME = 3600000L * 24 * 7;
 
     /**
      * 生成令牌
@@ -60,8 +60,9 @@ public class JwtTokenUtil {
     public Boolean isTokenExpired(String token) throws  Exception{
         try {
             Claims claims = getClaimsFromToken(token);
-            Date expiration = claims.getExpiration();
-            return expiration.before(new Date());
+            long spaceTime = claims.getExpiration().getTime() - EXPIRATION_TIME / 2;
+            long currentTime = new Date().getTime();
+            return currentTime > spaceTime ? true : false;
         } catch (Exception e) {
             new Throwable(e);
         }
@@ -95,7 +96,7 @@ public class JwtTokenUtil {
      */
     public Boolean validateToken(String token, UserDetails userDetails) throws Exception {
         String username = getUsernameFromToken(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        return (username.equals(userDetails.getUsername()) && isTokenExpired(token));
     }
 
     /**
@@ -106,6 +107,7 @@ public class JwtTokenUtil {
      */
     private String generateToken(Map<String, Object> claims) {
         Date expirationDate = new Date(System.currentTimeMillis()+ EXPIRATION_TIME);
+        long l = System.currentTimeMillis() + EXPIRATION_TIME;
         return Jwts.builder().setClaims(claims).setExpiration(expirationDate).signWith(SignatureAlgorithm.HS512, SECRET_KEY).compact();
     }
 

@@ -4,7 +4,8 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.dyz.authentication.configuration.ResponseResult.JSONResponseToWeb;
 import com.dyz.authentication.entity.SysLoginLog;
-import com.dyz.authentication.entity.SysMenu;
+import com.dyz.authentication.entity.Vo.SysMenuVo;
+import com.dyz.authentication.entity.auth.AuthUser;
 import com.dyz.authentication.service.SysLoginLogService;
 import com.dyz.authentication.service.SysMenuService;
 import com.dyz.authentication.util.IpPathUtil;
@@ -13,7 +14,6 @@ import com.dyz.authentication.util.RedisTemplateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import javax.servlet.ServletException;
@@ -48,19 +48,24 @@ public class MyLoginAuthenticationSuccessHandler extends JSONResponseToWeb imple
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
         // 获取账户信息
-        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        AuthUser authUser = (AuthUser)authentication.getPrincipal();
         // 将账户信息存储到SecurityContextHolder中
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = this.getToken(userDetails);
+        String token = this.getToken(authUser);
+        List<SysMenuVo> menuList = null;
         // 加载前端菜单
-        List<SysMenu> menuList = menuService.getMenuListByUserName(userDetails.getUsername());
+        try{
+             menuList = menuService.getMenuListByUserName(authUser.getUsername());
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
         // 添加登录日志
-        SysLoginLog loginLog = new SysLoginLog(userDetails.getUsername(), IpPathUtil.getIp(),"成功");
+        SysLoginLog loginLog = new SysLoginLog(authUser.getUsername(), IpPathUtil.getIp(),"成功");
         this.loginLogService.save(loginLog);
         //返回数据给前端
         Map<String,Object> resultMap = new HashMap<>();
-        resultMap.put("username",userDetails.getUsername());
-        resultMap.put("authentication",userDetails.getAuthorities());
+        resultMap.put("username",authUser.getUsername());
+        resultMap.put("authentication",authUser.getAuthorities());
         resultMap.put("menus",menuList);
         resultMap.put("token",token);
         R<Map<String,Object>> data =  R.ok(resultMap);
@@ -72,12 +77,12 @@ public class MyLoginAuthenticationSuccessHandler extends JSONResponseToWeb imple
      * @param userDetails 
      * @return java.lang.String
      **/
-    public String getToken(UserDetails userDetails){
-        String redisToken = redisTemplateUtil.getItem(userDetails.getUsername());
+    public String getToken(AuthUser authUser){
+        String redisToken = redisTemplateUtil.getItem(authUser.getUsername());
         String token;
         if (StringUtils.checkValNull(redisToken)){
-            token = jwtTokenUtil.generateToken(userDetails);
-            redisTemplateUtil.setItemWithExpireTime(userDetails.getUsername(),token,jwtTokenUtil.EXPIRATION_TIME);
+            token = jwtTokenUtil.generateToken(authUser);
+            redisTemplateUtil.setItemWithExpireTime(authUser.getUsername(),token,redisTemplateUtil.REDIS_EXPIRE_TIME);
         } else {
             token = redisToken;
         }

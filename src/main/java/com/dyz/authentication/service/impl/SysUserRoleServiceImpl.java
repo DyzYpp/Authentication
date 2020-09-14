@@ -2,9 +2,8 @@ package com.dyz.authentication.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.dyz.authentication.entity.SysRoleMenu;
 import com.dyz.authentication.entity.SysUserRole;
-import com.dyz.authentication.entity.VO.SysRoleAndPermissionVo;
+import com.dyz.authentication.entity.Vo.SysRoleAndPermissionVo;
 import com.dyz.authentication.mapper.SysUserRoleMapper;
 import com.dyz.authentication.service.SysUserRoleService;
 import org.springframework.stereotype.Service;
