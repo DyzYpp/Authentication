@@ -1,7 +1,11 @@
 package com.dyz.authentication.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.dyz.authentication.entity.VO.SysUserVo;
+import lombok.Data;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Date;
 
 /**
@@ -11,18 +15,28 @@ import java.util.Date;
  * @description 系统用户实体类
  */
 @TableName(value = "sys_user")
+@Entity
+@Data
 public class SysUser{
 
+    @Id
     @TableId(value = "id",type = IdType.ASSIGN_UUID)
     private String id;
 
+    @TableField("user_name")
     private String userName;
 
+    @TableField("pass_word")
     private String passWord;
 
-    private String description;
+    @TableField("id_card")
+    private String idCard;
 
-    private Integer status;
+    @TableField("sex")
+    private Integer sex;
+
+    @TableField("age")
+    private Integer age;
 
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
@@ -37,90 +51,13 @@ public class SysUser{
     public SysUser() {
     }
 
-    public SysUser(String id, String userName, String passWord, String description, Integer status) {
-        this.id = id;
-        this.userName = userName;
-        this.passWord = passWord;
-        this.description = description;
-        this.status = status;
+    public SysUser(SysUserVo userVo) {
+        this.id = userVo.getId();
+        this.userName = userVo.getUserName();
+        this.passWord = userVo.getPassWord();
+        this.age = userVo.getAge();
+        this.idCard = userVo.getIdCard();
+        this.sex = userVo.getSex();
     }
 
-
-    public Integer getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(Integer isDeleted) {
-        this.isDeleted = isDeleted;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassWord() {
-        return passWord;
-    }
-
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    @Override
-    public String toString() {
-        return "SysUser{" +
-                "id='" + id + '\'' +
-                ", userName='" + userName + '\'' +
-                ", passWord='" + passWord + '\'' +
-                ", description='" + description + '\'' +
-                ", status=" + status +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                ", isDeleted=" + isDeleted +
-                '}';
-    }
 }

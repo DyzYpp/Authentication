@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 /**
  * @ClassName SysRoleMenu
  * @Author Duan yuzhe
@@ -11,8 +14,10 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * @description
  */
 @TableName(value = "sys_role_menu")
+@Entity
 public class SysRoleMenu {
 
+    @Id
     @TableId(type = IdType.ASSIGN_UUID)
     private String id;
 

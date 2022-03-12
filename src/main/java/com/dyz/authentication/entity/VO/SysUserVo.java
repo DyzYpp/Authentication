@@ -1,4 +1,7 @@
-package com.dyz.authentication.entity.Vo;
+package com.dyz.authentication.entity.VO;
+
+import com.baomidou.mybatisplus.annotation.TableField;
+import lombok.Data;
 
 /**
  * @ClassName SysUserVO
@@ -6,6 +9,7 @@ package com.dyz.authentication.entity.Vo;
  * @Date 2020/9/4
  * @description
  */
+@Data
 public class SysUserVo {
 
     private String id;
@@ -14,47 +18,10 @@ public class SysUserVo {
 
     private String passWord;
 
-    private String description;
+    private String idCard;
 
-    public String getId() {
-        return id;
-    }
+    private Integer sex;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    private Integer age;
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassWord() {
-        return passWord;
-    }
-
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @Override
-    public String toString() {
-        return "SysUserVO{" +
-                "id=" + id +
-                ", userName='" + userName + '\'' +
-                ", passWord='" + passWord + '\'' +
-                ", description='" + description + '\'' +
-                '}';
-    }
 }

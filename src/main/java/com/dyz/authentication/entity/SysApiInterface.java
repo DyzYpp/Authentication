@@ -2,6 +2,8 @@ package com.dyz.authentication.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Date;
 
 /**
@@ -11,8 +13,10 @@ import java.util.Date;
  * @description api接口实体类
  */
 @TableName(value = "sys_api_interface")
+@Entity
 public class SysApiInterface {
 
+    @Id
     @TableId(value = "id",type = IdType.ASSIGN_UUID)
     private String apiId;
 

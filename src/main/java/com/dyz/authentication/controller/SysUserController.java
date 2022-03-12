@@ -1,8 +1,8 @@
 package com.dyz.authentication.controller;
 
 import com.dyz.authentication.entity.SysUser;
+import com.dyz.authentication.entity.VO.SysUserVo;
 import com.dyz.authentication.entity.Vo.PageVo;
-import com.dyz.authentication.entity.Vo.SysUserVo;
 import com.dyz.authentication.service.SysUserService;
 import com.dyz.authentication.util.ResultUtil.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;

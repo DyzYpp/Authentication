@@ -13,21 +13,20 @@ import java.util.Collection;
  */
 public class AuthUser implements UserDetails {
 
+    private static final long serialVersionUID = 2228056662409903301L;
+
     private String userName;
 
     private String passWord;
 
-    private Integer state;
-
-    private Collection<? extends GrantedAuthority>  authorities;
+    private Collection<? extends GrantedAuthority> authorities;
 
     public AuthUser() {
     }
 
-    public AuthUser(String userName, String passWord, Integer state, Collection<? extends GrantedAuthority> authorities) {
+    public AuthUser(String userName, String passWord, Collection<? extends GrantedAuthority> authorities) {
         this.userName = userName;
         this.passWord = passWord;
-        this.state = state;
         this.authorities = authorities;
     }
 
@@ -71,7 +70,6 @@ public class AuthUser implements UserDetails {
         return "AuthUser{" +
                 "userName='" + userName + '\'' +
                 ", passWord='" + passWord + '\'' +
-                ", state=" + state +
                 ", authorities=" + authorities +
                 '}';
     }

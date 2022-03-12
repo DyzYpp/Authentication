@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 /**
  * @ClassName SysUserRole
  * @Author
@@ -11,8 +14,10 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * @description
  */
 @TableName(value = "sys_user_role")
+@Entity
 public class SysUserRole {
 
+    @Id
     @TableId(type = IdType.ASSIGN_UUID)
     private String id;
 

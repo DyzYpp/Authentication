@@ -40,7 +40,7 @@ public class AuthenticationImpl implements UserDetailsService {
             for (SysRole role : roles) {
                 authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
             }
-            return new AuthUser(user.getUserName(),user.getPassWord(),user.getStatus(),authorities);
+            return new AuthUser(user.getUserName(),user.getPassWord(),authorities);
         }
     }
 }

@@ -2,6 +2,8 @@ package com.dyz.authentication.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Date;
 
 /**
@@ -11,8 +13,10 @@ import java.util.Date;
  * @description
  */
 @TableName("sys_login_log")
+@Entity
 public class SysLoginLog {
 
+    @Id
     @TableId(type = IdType.ASSIGN_UUID)
     private String id;
 

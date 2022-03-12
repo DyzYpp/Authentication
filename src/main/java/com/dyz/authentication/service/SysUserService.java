@@ -2,9 +2,9 @@ package com.dyz.authentication.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.dyz.authentication.entity.SysUser;
+import com.dyz.authentication.entity.VO.SysUserVo;
 import com.dyz.authentication.entity.Vo.PageVo;
 import com.dyz.authentication.entity.Vo.SysRoleAndPermissionVo;
-import com.dyz.authentication.entity.Vo.SysUserVo;
 import com.dyz.authentication.util.ResultUtil.AjaxResult;
 
 import java.util.List;
