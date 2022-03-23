@@ -7,6 +7,7 @@ import com.dyz.authentication.service.SysUserService;
 import com.dyz.authentication.util.IpPathUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,13 +30,13 @@ public class MyUserNamePassWordAuthenticationFilter extends UsernamePasswordAuth
     @Autowired
     private SysUserService userService;
 
-    @Autowired
-    SysLoginLogService loginLogService;
+//    @Autowired
+//    SysLoginLogService loginLogService;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         // 创建登录日志对象
-        SysLoginLog loginLog = new SysLoginLog(IpPathUtil.getIp());
+//        SysLoginLog loginLog = new SysLoginLog(IpPathUtil.getIp());
         // 判断请求传递参数的格式
         if (request.getContentType().equals(MediaType.APPLICATION_JSON_VALUE) || request.getContentType().equals(MediaType.APPLICATION_JSON_UTF8_VALUE)) {
 
@@ -43,7 +44,7 @@ public class MyUserNamePassWordAuthenticationFilter extends UsernamePasswordAuth
             ObjectMapper objectMapper = new ObjectMapper();
             UsernamePasswordAuthenticationToken authentication = null;
             // 存放用户信息
-            Map<String, String> authenticationBean = null;
+            Map authenticationBean = null;
             //用try with resource，方便自动释放资源
             try (InputStream is = request.getInputStream()) {
                 authenticationBean = objectMapper.readValue(is, Map.class);
@@ -54,10 +55,10 @@ public class MyUserNamePassWordAuthenticationFilter extends UsernamePasswordAuth
             try {
                 if (!authenticationBean.isEmpty()){
                     // 获取账号密码
-                    String userName = authenticationBean.get(SPRING_SECURITY_FORM_USERNAME_KEY);
-                    String passWord = authenticationBean.get(SPRING_SECURITY_FORM_PASSWORD_KEY);
+                    String userName = (String) authenticationBean.get(SPRING_SECURITY_FORM_USERNAME_KEY);
+                    String passWord = (String) authenticationBean.get(SPRING_SECURITY_FORM_PASSWORD_KEY);
                     // 将用户名设置为登录用户人
-                    loginLog.setLoginUser(userName);
+//                    loginLog.setLoginUser(userName);
                     // 检查账号是否存在，密码是否正确
                     if (userService.checkLoginInfo(userName,passWord)){
                         authentication = new UsernamePasswordAuthenticationToken(userName,passWord);
@@ -66,9 +67,9 @@ public class MyUserNamePassWordAuthenticationFilter extends UsernamePasswordAuth
                     }
                 }
             } catch (Exception e) {
-                loginLog.setSucceed("失败");
-                loginLog.setMessage(e.getMessage());
-                this.loginLogService.save(loginLog);
+//                loginLog.setSucceed("失败");
+//                loginLog.setMessage(e.getMessage());
+//                this.loginLogService.save(loginLog);
                 throw new MyAuthenticationException(e.getMessage());
             }
             return null;

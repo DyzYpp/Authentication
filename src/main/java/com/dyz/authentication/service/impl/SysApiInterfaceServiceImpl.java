@@ -103,8 +103,7 @@ public class SysApiInterfaceServiceImpl extends ServiceImpl<SysApiInterfaceMappe
                 }
             }
         }
-        List<SysApiInterfaceVo> collect = resultList.stream().sorted(Comparator.comparing(SysApiInterfaceVo::getApiSort)).collect(Collectors.toList());
-        return collect;
+        return resultList.stream().sorted(Comparator.comparing(SysApiInterfaceVo::getApiSort)).collect(Collectors.toList());
     }
 
     /*

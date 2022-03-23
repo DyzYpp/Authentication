@@ -9,6 +9,7 @@ import com.dyz.authentication.configuration.authentication.requestAuthentication
 import com.dyz.authentication.configuration.authentication.requestAuthentication.handler.DynamicPermission;
 import com.dyz.authentication.configuration.authentication.requestAuthentication.handler.MyAccessDeniedHandler;
 import com.dyz.authentication.configuration.authentication.requestAuthentication.handler.MyAuthenticationEntryPoint;
+import com.dyz.authentication.entity.auth.AuthUser;
 import com.dyz.authentication.service.impl.AuthenticationImpl;
 import com.dyz.authentication.util.BCryptPasswordEncoderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsUtils;
@@ -124,5 +127,19 @@ public class WebSecurityCoreConfig extends WebSecurityConfigurerAdapter {
 
         filter.setAuthenticationManager(authenticationManagerBean());
         return filter;
+    }
+
+    /**
+     * 登录成功后，从security中获取用户名称
+     */
+    public static String getUserNameFromSecurity() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = null;
+        try {
+            authUser = (AuthUser) authentication.getPrincipal();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return authUser != null ? authUser.getUsername() : "前端测试";
     }
 }

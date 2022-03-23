@@ -35,7 +35,7 @@ public class ListToHierarchyListService {
         // 将middleList转换为泛型为SysRoleApi的对象集合
         List<SysRoleApi> roleApiList = null;
         if (list.size() != 0 && middleList.size() != 0){
-            if (list.get(0).getClass().getName().indexOf("SysMenu") != -1){
+            if (list.get(0).getClass().getName().contains("SysMenu")){
                 menuList = (List<SysMenu>)list;
                 roleMenus = (List<SysRoleMenu>)middleList;
                 for (SysMenu menu : menuList) {

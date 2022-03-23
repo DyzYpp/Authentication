@@ -51,7 +51,7 @@ public class SysApiInterfaceController {
             sysApiInterface.setPid("NONE");
         }
         boolean save = apiInterfaceService.save(sysApiInterface);
-        return save == true ? AjaxResult.success() : AjaxResult.error();
+        return save ? AjaxResult.success() : AjaxResult.error();
     }
 
     /*
@@ -61,7 +61,7 @@ public class SysApiInterfaceController {
     @PutMapping
     public AjaxResult update(@RequestBody SysApiInterface sysApiInterface){
         boolean b = apiInterfaceService.updateById(sysApiInterface);
-        return b == true ? AjaxResult.success() : AjaxResult.error();
+        return b ? AjaxResult.success() : AjaxResult.error();
     }
 
     /*
@@ -71,7 +71,7 @@ public class SysApiInterfaceController {
     @DeleteMapping
     public AjaxResult delete(@RequestParam("idList") List<String> ids){
         boolean delete = apiInterfaceService.delete(ids);
-        return delete == true ? AjaxResult.success() : AjaxResult.error();
+        return delete ? AjaxResult.success() : AjaxResult.error();
     }
 
 }
